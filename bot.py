@@ -6,16 +6,22 @@ from datetime import datetime, timedelta
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler,
-    CallbackContext, CallbackQueryHandler, filters
+    CallbackContext, filters
 )
 from pymongo import MongoClient
+from dotenv import load_dotenv
 
 # =========================
-# Environment Configuration
+# Load Environment Variables
 # =========================
+load_dotenv()
 TOKEN = os.getenv('BOT_TOKEN')
 CHANNEL_ID = os.getenv('CHANNEL_ID')
 MONGO_URI = os.getenv('MONGO_URI')
+
+# Validate token
+if not TOKEN or not TOKEN.startswith('8022651374:AAG0o5FmL4kQTi8XTJDsOc9cGlVCzs54Ibw'):
+    raise ValueError("Invalid or missing BOT_TOKEN. Please check your .env file.")
 
 # =========================
 # MongoDB Setup
@@ -27,7 +33,7 @@ users_collection = db['users']
 # =========================
 # Bot Settings
 # =========================
-VERIFICATION_REQUIRED = False  # Verification flag disabled (no ads/token system)
+VERIFICATION_REQUIRED = False
 admin_ids = [6025969005, 6018060368]
 
 # =========================
@@ -78,7 +84,6 @@ async def users_count(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text("Access denied.")
 
 async def handle_link(update: Update, context: CallbackContext) -> None:
-    user = update.effective_user
     if update.message.text.startswith('http://') or update.message.text.startswith('https://'):
         original_link = update.message.text
         parsed_link = urllib.parse.quote(original_link, safe='')
