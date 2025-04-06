@@ -83,7 +83,7 @@ async def handle_link(update: Update, context: CallbackContext) -> None:
         original_link = update.message.text
         parsed_link = urllib.parse.quote(original_link, safe='')
         modified_link = f"https://terabox-play.lbni.workers.dev/api?url={parsed_link}"
-        sharelink = f"https://t.me/share/url?url=https://t.me/TeraBox_OnlineBot?start=terabox-{original_link.split('/')[-1]}"
+        sharelink = f"https://t.me/share/url?url=https://t.me/noob_jeRoboT?start=terabox-{original_link.split('/')[-1]}"
 
         button = [
             [InlineKeyboardButton("🌐Stream Server 1🌐", url=modified_link)],
